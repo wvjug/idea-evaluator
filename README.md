@@ -90,7 +90,7 @@ The usage section specifies an example usage case. The most notable thing here i
 
 | Members  | Contact | Github username | 
 | -------- | ------- | --------------- |
-| Ming-Chieh Liu  | eddie.m.c.liu@gmail   | ming-chieh-liu |
+| Ming-Chieh Liu  | eddie.m.c.liu@gmail.com   | ming-chieh-liu |
 | Natcha Choptnoparatpat | nchotnoparatpat@uchicago.edu    |FahChotnoparatpat |
 | Varun Mohan   | vamohan@uchicago.edu   | vmohan96 | 
 | Wisly Juganda | wisly@uchicago.edu | wvjug | 
