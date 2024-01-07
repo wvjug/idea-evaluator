@@ -65,9 +65,9 @@ Using BERT classifier model to predict the quality of solutions in three criteri
 1. Main scripts: 
     - `run.py` is the main script for training
         ```bash
-        python3 run.py
+        python3 run.py --data_dir ../data/hackathon_data_annotated.csv
         ```
-        **Note**: if we want to require a gpu session or submit a slurm job to run on a gpu, please at least require 32G memory.
+        **Note**: Since we do not annotate all data, please use the `hackathon_data_annotated.csv` as the training data source. 
     - `eval.py` is the main script for evaluating
         ```bash
         python3 eval.py
