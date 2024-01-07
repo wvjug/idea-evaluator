@@ -12,7 +12,7 @@ def main():
     # Run model and display output
         model_output = eval(problem_input, solution_input, model_ckpt="bert_classifier.pth")
         labels = model_output[0]
-        clean_labels = f"Circular Economy Impact: {labels[0]} \n Market Potential: {labels[1]} \n Feasibility: {labels[2]}"
+        clean_labels = f"Adherence to Circular Economy: {labels[0]} \n Market Potential: {labels[1]} \n Feasibility: {labels[2]}"
         st.text_area("Idea Evaluation Report:", value=clean_labels, key="model_output", height=100)
 
 if __name__ == "__main__":
