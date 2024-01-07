@@ -11,8 +11,6 @@ def main():
 
     # Initial UI components
     clean_labels, text_response = "", ""
-    st.text_area("Evaluation metrics:", value=clean_labels, key="bert_output", height=110)
-    st.text_area("Example solution :", value=text_response, key="gpt_output", height=110)
 
     if problem_input != "" and solution_input != "" :
     # Run model and display output
@@ -20,11 +18,16 @@ def main():
         labels = model_output[0]
         average_score = sum(labels) / 3
         average_score = round(average_score, 2)
-        clean_labels = f"Adherence to Circular Economy: {labels[0]} \n Market Potential: {labels[1]} \n Feasibility: {labels[2]} \n Average Score: {average_score}"
-        st.text_area("Evaluation metrics:", value=clean_labels, key="bert_output", height=110)
+
+        st.write("Evaluation metrics:")
+        st.write(f"Adherence to Circular Economy: {labels[0]}")
+        st.write(f"Market Potential: {labels[1]}")
+        st.write(f"Feasibility: {labels[2]}")
+        st.write(f"Average Score: {average_score}")
 
         text_response = generate_response(problem_input)
-        st.text_area("Example solution :", value=text_response, key="gpt_output", height=110)
+        st.write("Example alternative solution:")
+        st.write(text_response)
 
 if __name__ == "__main__":
     main()
