@@ -61,7 +61,7 @@ The code in this repository can be run in 2 ways:
 2. The predictions can be re-run (using our pretrained saved models). 
 
 ### BERT Classifier 
-Using BERT classifier model to predict the quality of solutions in three criteria - adherence to the circular economy principles, market potentials, and feasibility. The scripts are all stored in directory `bert_classifier`. Please see the following scripts for implementation: 
+Using BERT classifier model to predict the quality of solutions in three criteria - adherence to the circular economy principles, market potentials, and feasibility. The scripts are all stored in directory `bert_classifier`. Please also see the [reference for the model](https://medium.com/@khang.pham.exxact/text-classification-with-bert-7afaacc5e49b). Please see the following scripts for implementation: 
 1. Main scripts: 
     - `run.py` is the main script for training
         ```bash
