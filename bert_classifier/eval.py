@@ -1,26 +1,14 @@
-# import modules 
 import torch
 import warnings
 from pathlib import Path
-import argparse
-import model
+from . import model
 from transformers import BertTokenizer
+import sys
 
-if __name__ == "__main__":
-    # default config.json location 
-    cur_dir = Path(__file__).resolve().parent
+sys.path.append("..")
 
-    # Wisly TODO:  figure out how to input the problem and solutions from the users 
-
-    # set up command line arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--model_ckpt", help="path to model checkpoint", default = cur_dir/"model.pth"
-    )
-    args = parser.parse_args()
-    
-    # read command args 
-    model_ckpt = Path(args.model_ckpt).resolve()
+def eval(problem:str, solution:str, model_ckpt:str):    
+    model_ckpt = Path(model_ckpt).resolve()
     device = "cpu"
     # warning if not using cuda 
     if torch.cuda.is_available():
@@ -37,9 +25,6 @@ if __name__ == "__main__":
     classifier.load_state_dict(torch.load(model_ckpt, map_location=torch.device(device)))
     classifier.to(device)
 
-    # Wisly TODO: input data 
-    problem = ""
-    solution = ""
     inputs = "Problem: " + problem + "\nSolution: " + solution 
 
     tokenizer = BertTokenizer.from_pretrained(bert_model_name)
@@ -60,11 +45,11 @@ if __name__ == "__main__":
     predicted_labels = (predicted_labels.cpu().numpy() + 2) / 2
     print(predicted_labels)
 
-    # Wisly TODO: return the predicted labels back 
     # the shape of predicted labels are (1, 3) where 1 is the batch size/number of the {problem, solution} pairs 
     # and 3 is the score for "Circular Economy", "Market Potentials", "Feasibility"
     # e.g. [[5., 4., 4.,]]
 
+    return predicted_labels 
 
 
 
