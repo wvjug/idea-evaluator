@@ -6,7 +6,7 @@ Our solution is a web app that evaluates the quality of a solution given a probl
 ####
 [Dependencies](#dependencies)
 ####
-[Instructiions to run app](#instructions-to-run-app)
+[Instructions to run app](#instructions-to-run-app)
 ####
 [Input Evaluation Metrics](#input-evaluation-metrics)
 ####
