@@ -1,6 +1,6 @@
 <div align="center">
 
-# BERT Classifier for Evaluation of Solutions to Problems
+# BERT Classifier for Evaluating Solutions to Problems
 
 </div>
 
