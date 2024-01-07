@@ -92,10 +92,6 @@ BERT model tends to predict the same output no matter what input is. The potenti
 
 GPT model often runs out of memory when training. Downsizing the tokenized sentences can be used to address the issue.
 
-
-![image](https://github.com/wvjug/idea-evaluator/assets/107445187/743169f2-768f-464a-bbfa-169db6941cf6)
-
-
 ## Contributions 
 
 | Members  | Contact | Github username | 
