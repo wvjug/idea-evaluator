@@ -43,8 +43,4 @@ Please see the following scripts for implementation:
   None of our code needs multiple GPUs.
 - All of our experiments were run on computers running Linux. 
 
-## Licensing 
-
-All rights are reserved by GreenWave and UChicago Data Science Institute. 
-
 
