@@ -1,22 +1,18 @@
-# Idea Evaluator
+# Circular Economy Idea Evaluator
 
-Our solution is a web app that evaluates the quality of a solution given a problem in the context of the circular economy. The quality of the solution is evaluated using 3 metrics from a scale of 1-5 using a BERT model. It then recommends improvements to the solution based on this evaluation using a GPT model. The metrics chosen are the following: 
+Our solution is a web app that evaluates the quality of a solution given a problem in the context of the circular economy. The quality of the solution is evaluated using 3 evaluation metrics from a scale of 1-5 using a BERT model, and then suggest alternative solutions using a Generative Chatbot. It then recommends improvements to the solution based on this evaluation using a GPT model. 
 ##
-#### 1. Adherence to Circular Economy
-###
-Fit into the three principles:
-1) Waste and Pollution Elimination
-2) Product Circulation
-3) Nature Regeneration
-##
-#### 2. Market Potential
-###
-- Market size and saturation
-- Current demands
-- Growth potential
-##
-#### 3. Feasibility
-- Implementation Difficulties and Risks
+## Index
+####
+[Dependencies](#dependencies)
+####
+[Instructiions to run app](#instructions-to-run-app)
+####
+[Input Evaluation Metrics](#input-evaluation-metrics)
+####
+[Instructions to Train Models](#architecture-description)
+####
+[Contributions](#contributions)
 ##
 ## Dependencies
 The app is built on the Python 3 library Streamlit and requires the following packages to be run:
@@ -24,7 +20,7 @@ The app is built on the Python 3 library Streamlit and requires the following pa
 2) PyTorch
 3) Transformers by Hugging Face
 ##
-## Instructions for Running App
+## Instructions to Run App
 1. Set up environment and install dependencies
 - Install miniconda
     ```bash
@@ -54,6 +50,25 @@ streamlit run chat_ui.py
 ```
 3. This will run the app on localhost and open it on the default browser
 ## 
+## Input Evaluation Metrics
+####
+The metrics used to evaluate solutions used as input to our tool is as follows (on a scale of 1-5):
+#### 1. Adherence to Circular Economy
+####
+Fit into the three principles:
+1) Waste and Pollution Elimination
+2) Product Circulation
+3) Nature Regeneration
+####
+#### 2. Market Potential
+####
+- Market size and saturation
+- Current demands
+- Growth potential
+####
+#### 3. Feasibility
+- Implementation Difficulties and Risks
+##
 ## Instructions for Training Models
 
 The code in this repository can be run in 2 ways:
