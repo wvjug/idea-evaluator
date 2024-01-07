@@ -1,22 +1,17 @@
 import torch 
-from torch import nn 
+from torch import nn, Tensor
 from transformers import BertModel # AdamW, get_linear_schedule_with_warmup
 
 class BERTClassifierConfig:
     """BERT config, params common to all BERT versions
     @var num_classes (int): categories of classification 
     @var bert_model_name (str): pretrained model name to be downloaded 
-    @var device (int or str): current devices we are using 
     """
     pdrop = 0.1
     
-    def __init__(self, num_classes, bert_model_name, **kwargs):
+    def __init__(self, num_classes:int, bert_model_name:str, **kwargs):
         self.num_classes = num_classes
         self.bert_model_name = bert_model_name
-        
-        self.device = 'cpu'
-        if torch.cuda.is_available():
-            self.device = torch.cuda.current_device()
 
         for k,v in kwargs.items():
             setattr(self, k, v)
@@ -40,7 +35,7 @@ class BERTClassifier(nn.Module):
         self.market_potentials = nn.Linear(self.bert.config.hidden_size, config.num_classes)
         self.feasibility = nn.Linear(self.bert.config.hidden_size, config.num_classes)
         
-    def forward(self, input_ids, attention_mask):
+    def forward(self, input_ids:Tensor, attention_mask:Tensor):
             # use bert to get extracted meanings of tokens 
             outputs = self.bert(input_ids=input_ids, attention_mask=attention_mask)
             pooled_output = outputs.pooler_output
