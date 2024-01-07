@@ -85,6 +85,16 @@ The `tinyllama.py` script contains setup to load from HuggingFace the generative
 The `generate_response` function takes in a prompt, expected to be a problem related to sustainability, and a max_length which defaults to 300 (enough for most reasonable responses). It tokenizes the input and feeds it into the TinyLlama model, and decodes it back into English.
 
 The usage section specifies an example usage case. The most notable thing here is that we are manually prompting the model to provide a solution to the inputted problem, so the problem is prepended with the phrase "Propose a solution to this problem: ". This functionality is carried over to the Streamlit application.
+##
+## Limitations
+
+BERT model tends to predict the same output no matter what input is. The potential reason is the model does not learn the context well. To address the issue, annotated data and the model complexity can be increased through stacked layers or increased dimensions of parameters to match data complexity
+
+GPT model often runs out of memory when training. Downsizing the tokenized sentences can be used to address the issue.
+
+
+![image](https://github.com/wvjug/idea-evaluator/assets/107445187/743169f2-768f-464a-bbfa-169db6941cf6)
+
 
 ## Contributions 
 
