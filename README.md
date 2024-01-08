@@ -2,7 +2,7 @@
 
 Our solution is a web app that evaluates the quality of a solution given a problem in the context of the circular economy. The quality of the solution is evaluated using 3 evaluation metrics from a scale of 1-5 using a BERT model, and then suggest alternative solutions using a Generative Chatbot. It then recommends improvements to the solution based on this evaluation using a GPT model. 
 
-[![Watch the video]([https://img.youtube.com/vi/tmo-5qE2F3U/0.jpg)](https://youtu.be/tmo-5qE2F3U](https://youtu.be/4BZ08tSvrt0?si=iJEuMk--HYN4F7NA))
+[![Watch the video](https://youtu.be/4BZ08tSvrt0?si=ppSQUH6E1Luui48G)
 ##
 ## Index
 ####
