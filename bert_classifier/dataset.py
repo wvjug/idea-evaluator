@@ -16,7 +16,8 @@ class HackathonDataset(Dataset):
         solution = self.data.loc[idx, "Solution"]
 
         # concatenate the scores from three criteria 
-        label = self.data.loc[idx, ["Circular Economy", "Market Potentials", "Feasibility"]]
+        # label = self.data.loc[idx, ["Circular Economy", "Market Potentials", "Feasibility"]]
+        label = self.data.loc[idx, "Feasibility"]
 
         # return: (str) {problem, solution} pair, (Tensor[float]) ordering score from 1-5 for three criteria
         return "Problem: " + str(problem) + "\nSolution: " + str(solution), torch.tensor(label).to(torch.long)*2-2

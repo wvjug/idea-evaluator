@@ -20,10 +20,10 @@ class MLP(nn.Module):
     def __init__(self, input_dim, tgt_dim):
         super(MLP, self).__init__()
         self.model = nn.Sequential(
-            nn.Linear(input_dim, input_dim*4), 
-            nn.ReLU(),
-            nn.Linear(input_dim*4, input_dim), 
-            nn.ReLU(),
+            # nn.Linear(input_dim, input_dim*4), 
+            # nn.ReLU(),
+            # nn.Linear(input_dim*4, input_dim), 
+            # nn.ReLU(),
             nn.Linear(input_dim, 256), 
             nn.ReLU(),
             nn.Linear(256, 128),
@@ -54,17 +54,18 @@ class BERTClassifier(nn.Module):
         self.feasibility = MLP(self.bert.config.hidden_size, config.num_classes)
         
     def forward(self, input_ids:Tensor, attention_mask:Tensor):
-            # use bert to get extracted meanings of tokens 
-            outputs = self.bert(input_ids=input_ids, attention_mask=attention_mask)
-            pooled_output = outputs.pooler_output
+        # use bert to get extracted meanings of tokens 
+        outputs = self.bert(input_ids=input_ids, attention_mask=attention_mask)
+        pooled_output = outputs.pooler_output
 
-            x = self.dropout(pooled_output)
+        x = self.dropout(pooled_output)
 
-            # fully connected layers 
-            c_logits = self.circular_economy(x)
-            m_logits = self.market_potentials(x)
-            f_logits = self.feasibility(x)
+        # fully connected layers 
+        c_logits = self.circular_economy(x)
+        m_logits = self.market_potentials(x)
+        f_logits = self.feasibility(x)
 
-            # return: concatenate logit scores for three criteria
-            concatenated_logits = torch.cat((c_logits.unsqueeze(1), m_logits.unsqueeze(1), f_logits.unsqueeze(1)), dim=1)
-            return concatenated_logits
+        # return: concatenate logit scores for three criteria
+        concatenated_logits = torch.cat((c_logits.unsqueeze(1), m_logits.unsqueeze(1), f_logits.unsqueeze(1)), dim=1)
+        # return concatenated_logits
+        return f_logits

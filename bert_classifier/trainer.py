@@ -22,12 +22,12 @@ class TrainerConfig:
     # optimization parameters
     max_epochs = 10
     batch_size = 4
-    learning_rate = 3e-4
+    learning_rate = 1e-3
 
     # checkpoint settings
     ckpt_path = None
     num_workers = 0 # for DataLoader
-    criterion = nn.CrossEntropyLoss()
+    criterion = nn.CrossEntropyLoss(reduction="sum")
     
     def __init__(self, tokenizer_name, **kwargs):
         self.tokenizer = BertTokenizer.from_pretrained(tokenizer_name)
@@ -67,12 +67,28 @@ class Trainer:
 
         model, config = self.model, self.config
 
+        # freeze the bert params 
+        # unfreeze the self-defined params 
+        model = model.module if hasattr(model, "module") else model 
+        for param in model.parameters():
+            param.requires_grad = False
+        for param in model.circular_economy.parameters():  # Replace 'last_layer' with the actual layer name or index
+            param.requires_grad = True
+        for param in model.market_potentials.parameters():  # Replace 'last_layer' with the actual layer name or index
+            param.requires_grad = True
+        for param in model.feasibility.parameters():  # Replace 'last_layer' with the actual layer name or index
+            param.requires_grad = True
+
+        # sanity check 
+        # for name, param in model.named_parameters():
+        #     print(name, param.requires_grad)
+        # raise KeyboardInterrupt
+
         optimizer = optim.AdamW(model.parameters(), lr=config.learning_rate)
 
         min_test_loss = float("inf")
         for epoch in range(config.max_epochs):
-            # train
-            print(f"Epoch {epoch+1}")
+            print(f"Epoch: {epoch+1}")
             self._run_epoch('train', optimizer=optimizer)
 
             # validation 
@@ -85,6 +101,7 @@ class Trainer:
                 if test_loss < min_test_loss:
                     min_test_loss = test_loss
                     self.save_checkpoint()
+            print()
             
     def _run_epoch(self, split: str, optimizer: Optional[optim.AdamW]=None):
         model, config = self.model, self.config
@@ -102,7 +119,8 @@ class Trainer:
         else:
             data = self.test_dataset 
         
-        loader = DataLoader(data, batch_size=config.batch_size, num_workers=config.num_workers)
+
+        loader = DataLoader(data, batch_size=config.batch_size, num_workers=config.num_workers, shuffle=False)
 
         losses = []
         correct = 0 
@@ -111,25 +129,28 @@ class Trainer:
         
         for it, (sentences, labels) in pbar:
             # place data on the correct device
-            encoding = config.tokenizer(sentences, return_tensors='pt', padding=True, truncation=True)
-            input_ids = encoding['input_ids']
-            attention_mask = encoding['attention_mask']
+            # sentence: Problems: {problem}; Solution: {solution}
+            encoding = config.tokenizer(sentences, return_tensors='pt', padding=True, truncation=True) # Bert only accepts 512 tokens in a window
+            input_ids = encoding['input_ids'] # lookup id for each token 
+            attention_mask = encoding['attention_mask'] # focus on real text 
             
             # move to GPU if necessary
             input_ids, labels = input_ids.to(self.device), labels.to(self.device)
             attention_mask = attention_mask.to(self.device)
 
             # forward the model
-            with torch.set_grad_enabled(is_train):
-                outputs = model(input_ids, attention_mask=attention_mask)  # NOT USING INTERNAL CrossEntropyLoss
-                flattened_logits = outputs.view(-1, 9)
-                flattened_targets = labels.view(-1)
-                # print(flattened_logits)
-                # print(flattened_targets)
-                loss = config.criterion(flattened_logits, flattened_targets)
-                loss = loss.mean() # collapse all losses if they are scattered on multiple gpus
-                losses.append(loss.item())
-                
+            # with torch.set_grad_enabled(is_train):
+            outputs = model(input_ids, attention_mask=attention_mask) 
+            # result will be (b, 3, 9) 3 means 3 criteria (market potentials...) and each criteria has 9 classifications (1, 1.5, 2,...)
+            flattened_logits = outputs.view(-1, 9) # (b*3, 9)
+            flattened_targets = labels.view(-1)
+            # print(flattened_logits)
+            # print(flattened_targets)
+            loss = config.criterion(flattened_logits, flattened_targets) # cross entropy 
+            loss = loss.mean() # collapse all losses if they are scattered on multiple gpus
+            loss = loss / config.batch_size
+            losses.append(loss.item())
+
             if is_train:
                 assert optimizer is not None 
                 # backprop and update the parameters
@@ -143,6 +164,9 @@ class Trainer:
             # test mode: collect labels and corresponding predictions for plot 
             
             predicted_labels = torch.argmax(flattened_logits, dim=1)
+            # if it == 0:
+            #     print(sentences[0])
+            #     print(predicted_labels, flattened_targets)
             correct += torch.sum(predicted_labels == flattened_targets)
             total += len(flattened_targets)
 
