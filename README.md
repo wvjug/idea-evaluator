@@ -1,22 +1,20 @@
-# Idea Evaluator
+# Circular Economy Idea Evaluator
 
-Our solution is a web app that evaluates the quality of a solution given a problem in the context of the circular economy. The quality of the solution is evaluated using 3 metrics from a scale of 1-5 using a BERT model. It then recommends improvements to the solution based on this evaluation using a GPT model. The metrics chosen are the following: 
+Our solution is a web app that evaluates the quality of a solution given a problem in the context of the circular economy. The quality of the solution is evaluated using 3 evaluation metrics from a scale of 1-5 using a BERT model, and then suggest alternative solutions using a Generative Chatbot. It then recommends improvements to the solution based on this evaluation using a GPT model. 
+
+[Watch the presentation video](https://youtu.be/4BZ08tSvrt0)
 ##
-#### 1. Adherence to Circular Economy
-###
-Fit into the three principles:
-1) Waste and Pollution Elimination
-2) Product Circulation
-3) Nature Regeneration
-##
-#### 2. Market Potential
-###
-- Market size and saturation
-- Current demands
-- Growth potential
-##
-#### 3. Feasibility
-- Implementation Difficulties and Risks
+## Index
+####
+[Dependencies](#dependencies)
+####
+[Instructions to run app](#instructions-to-run-app)
+####
+[Input Evaluation Metrics](#input-evaluation-metrics)
+####
+[Instructions to Train Models](#architecture-description)
+####
+[Contributions](#contributions)
 ##
 ## Dependencies
 The app is built on the Python 3 library Streamlit and requires the following packages to be run:
@@ -24,7 +22,7 @@ The app is built on the Python 3 library Streamlit and requires the following pa
 2) PyTorch
 3) Transformers by Hugging Face
 ##
-## Instructions for Running App
+## Instructions to Run App
 1. Set up environment and install dependencies
 - Install miniconda
     ```bash
@@ -54,6 +52,25 @@ streamlit run chat_ui.py
 ```
 3. This will run the app on localhost and open it on the default browser
 ## 
+## Input Evaluation Metrics
+####
+The metrics used to evaluate solutions used as input to our tool is as follows (on a scale of 1-5):
+#### 1. Adherence to Circular Economy
+####
+Fit into the three principles:
+1) Waste and Pollution Elimination
+2) Product Circulation
+3) Nature Regeneration
+####
+#### 2. Market Potential
+####
+- Market size and saturation
+- Current demands
+- Growth potential
+####
+#### 3. Feasibility
+- Implementation Difficulties and Risks
+##
 ## Instructions for Training Models
 
 The code in this repository can be run in 2 ways:
@@ -85,6 +102,12 @@ The `tinyllama.py` script contains setup to load from HuggingFace the generative
 The `generate_response` function takes in a prompt, expected to be a problem related to sustainability, and a max_length which defaults to 300 (enough for most reasonable responses). It tokenizes the input and feeds it into the TinyLlama model, and decodes it back into English.
 
 The usage section specifies an example usage case. The most notable thing here is that we are manually prompting the model to provide a solution to the inputted problem, so the problem is prepended with the phrase "Propose a solution to this problem: ". This functionality is carried over to the Streamlit application.
+##
+## Limitations
+
+BERT model tends to predict the same output no matter what input is. The potential reason is the model does not learn the context well. To address the issue, annotated data and the model complexity can be increased through stacked layers or increased dimensions of parameters to match data complexity
+
+GPT model often runs out of memory when training. Downsizing the tokenized sentences can be used to address the issue.
 
 ## Contributions 
 
